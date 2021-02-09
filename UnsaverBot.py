@@ -1,4 +1,4 @@
-
+import sys
 from time import sleep
 from tqdm import tqdm
 from selenium import webdriver
@@ -7,8 +7,9 @@ class instaBot():
 	def __init__(self, username, password):
 		self.username = username
 		self.password = password
-		
-		self.driver = webdriver.Chrome('C:\\webdriver\\chromedriver.exe')
+
+		self.driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
+		#self.driver = webdriver.Chrome('chromedriver.exe')
 		self.driver.get('https://www.instagram.com/accounts/login/?source=auth_switcher')
 		sleep(2)
 
@@ -20,7 +21,7 @@ class instaBot():
 		.send_keys(password)
 		self.driver.find_element_by_xpath("//button[@type=\"submit\"]")\
 		.click()
-		sleep(6)
+		sleep(8)
 		self.driver.find_element_by_xpath("//button[contains(text(), 'Not Now')]")\
 		.click()
 
@@ -34,7 +35,8 @@ class instaBot():
 		print('opening Saved tab')
 		self.driver.find_element_by_xpath("//span[contains(text(), 'Saved')]")\
 		.click()
-
+		sleep(4)
+		
 		#open first image
 		print('opening images')
 		self.driver.find_element_by_xpath("//div[@class=\"v1Nh3 kIKUG  _bz0w\"]")\
@@ -53,5 +55,13 @@ class instaBot():
 			.click()
 			sleep(4)
 
-my_bot = instaBot('your_username', 'your_password')
-my_bot.UnsaveImages()
+if __name__ == "__main__":
+	if len(sys.argv) == 3:
+		username = sys.argv[1]
+		password = sys.argv[2]
+		my_bot = instaBot(username, password)
+		my_bot.UnsaveImages()
+	else:
+		print("Invalid number of arguments")
+		print(f"Syntax: python {sys.argv[0]} username password")
+		exit()
